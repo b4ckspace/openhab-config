@@ -1,0 +1,115 @@
+sitemap backspace label="Backspace"
+{
+	Frame label="Master" {
+		Switch item=Shutdown label="Shutdown All" mappings=[OFF="Engage"]
+		Switch item=ShutdownHackcenter label="Shutdown Hackcenter" mappings=[OFF="Engage"]
+		Switch item=ShutdownLounge label="Shutdown Lounge" mappings=[OFF="Engage"]
+    }
+
+	Frame label="Spacecontrol" {
+
+		Text label="Hackcenter" icon="cellar" {
+
+			Frame label="Temperature" {
+				Setpoint item=th_hackcenter_chimney label="Thermostat [%.2f]" minValue=4.0 maxValue=26.0 step=0.5
+			}
+
+			Frame label="Control" {
+				Switch item=ShutdownHackcenter label="Shutdown" mappings=[OFF="Engage"]
+				Switch item=wr_exit_white
+				Switch item=wr_exit_red
+				Switch item=wr_alarm
+				Switch item=fs_licht_halogen
+				Switch item=fs_licht_oben
+				Switch item=fs_licht_regal
+				Switch item=fs_licht_neon
+				Switch item=fs_ledboard
+			}
+
+			Frame label="Music" {
+				Slider item=Mpd_Hackcenter_Volume label="Volume [%d]"
+				Switch item=Mpd_Hackcenter_StartPause label="Start / Pause" icon="video"
+			}
+		}
+
+		Text label="Lounge" icon="sofa" {
+			Frame label="Temperature" {
+				Text item=temp_lounge_podest label="Temperatur Podest [%.2f °C]"
+				Text item=temp_lounge label="Temperatur Decke [%.2f °C]"
+			}
+			Frame label="Control" {
+				Switch item=ShutdownLounge label="Shutdown" mappings=[OFF="Engage"]
+				Switch item=fs_beamer
+				Switch item=fs_led_bars
+				Switch item=fs_nyancat
+				Switch item=fs_bookshelf
+				Switch item=fs_pedestal_tv
+				Switch item=fs_night_sky
+				Switch item=pc_kitchen_light
+				Switch item=pc_entry_light
+				Switch item=pc_canvas_light
+				Switch item=pc_podest_light
+			}
+		}
+
+		Text label="IT" icon="kitchen" {
+			Text item=temp_rack
+			Text item=load_1m_scarlet
+		}
+
+	}
+
+	Frame label="Direct Module Access" {
+
+		Text label="Webrelais" icon="settings" {
+			Switch item=wr_exit_white
+			Switch item=wr_exit_red
+			Switch item=wr_alarm
+		}
+
+		Text label="Powerctrl" icon="settings" {
+			Switch item=pc_kitchen_light
+			Switch item=pc_entry_light
+			Switch item=pc_canvas_light
+			Switch item=pc_podest_light
+		}
+
+		Text label="Funkstrom" icon="socket" {
+			Switch item=fs_licht_halogen
+			Switch item=fs_licht_oben
+			Switch item=fs_licht_regal
+			Switch item=fs_licht_neon
+			Switch item=fs_beamer
+			Switch item=fs_led_bars
+			Switch item=fs_nyancat
+			Switch item=fs_bookshelf
+			Switch item=fs_pedestal_tv
+			Switch item=fs_night_sky
+		}
+
+		Text label="Temperatures" icon="temperature" {
+			Text item=temp_aussen label="Aussen [%.2f °C]"
+			Text item=temp_hackcenter_garlic
+			Text item=temp_rack
+			Text item=temp_wc
+			Text item=temp_cnc
+			Text item=temp_lounge_podest label="Lounge Podest [%.2f °C]"
+			Text item=temp_lounge label="Lounge Decke [%.2f °C]"
+		}
+
+		Text label="MPD" icon="video" {
+			Switch item=Mpd_Hackcenter_StartPause label="Hackcenter Start/Pause"
+		}
+	}
+
+	Frame label="Information" {
+		Text item=account_balance
+		Text item=temp_hackcenter_garlic
+		Text item=temp_lounge
+		Text item=temp_aussen
+		Text item=members_present
+		Text item=alive_hosts
+	}
+
+}
+

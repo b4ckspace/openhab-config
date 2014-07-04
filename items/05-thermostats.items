@@ -1,0 +1,3 @@
+
+Number th_hackcenter_window_left "Hackcenter window left [%.1f °C]" <heating> { homematic="id=KEQXXXXXXX, channel=4, parameter=SET_TEMPERATURE" }
+Number th_hackcenter_chimney "Hackcenter chimney [%.1f °C]" <heating> { homematic="id=KEQXXXXXXX, channel=4, parameter=SET_TEMPERATURE" }

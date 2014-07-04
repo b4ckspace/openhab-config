@@ -1,0 +1,6 @@
+/* Powercontrol Hackcenter */
+
+Switch pc_kitchen_light "Licht Küche" <slider> (Shutdown, ShutdownLounge, LoungeLights)  { http=">[ON:POST:http://powerctrl.lounge/device/kitchen_light] >[OFF:DELETE:http://powerctrl.lounge/device/kitchen_light]"  }
+Switch pc_podest_light "Licht Podest" <slider> (Shutdown, ShutdownLounge, LoungeLights)  { http=">[ON:POST:http://powerctrl.lounge/device/podest_light] >[OFF:DELETE:http://powerctrl.lounge/device/podest_light]"  }
+Switch pc_canvas_light "Licht Leinwand" <slider> (Shutdown, ShutdownLounge, LoungeLights)  { http=">[ON:POST:http://powerctrl.lounge/device/canvas_light] >[OFF:DELETE:http://powerctrl.lounge/device/canvas_light]"  }
+Switch pc_entry_light "Licht Eingang" <slider> (Shutdown, ShutdownLounge, LoungeLights)  { http=">[ON:POST:http://powerctrl.lounge/device/entry_light] >[OFF:DELETE:http://powerctrl.lounge/device/entry_light]"  }

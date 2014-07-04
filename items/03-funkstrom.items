@@ -1,0 +1,16 @@
+/* Hackcenter */
+
+Switch fs_licht_regal "Licht Regal" <socket> (Shutdown, ShutdownHackcenter, HackcenterLights)  { http=">[ON:POST:http://funkstrom.hackcenter/socket/hc_licht_regal] >[OFF:DELETE:http://funkstrom.hackcenter/socket/hc_licht_regal]"  }
+Switch fs_licht_oben "Licht Oben" <socket> (Shutdown, ShutdownHackcenter, HackcenterLights)  { http=">[ON:POST:http://funkstrom.hackcenter/socket/hc_licht_oben] >[OFF:DELETE:http://funkstrom.hackcenter/socket/hc_licht_oben]"  }
+Switch fs_licht_neon "Licht Neon" <socket> (Shutdown, ShutdownHackcenter, HackcenterLights)  { http=">[ON:POST:http://funkstrom.hackcenter/socket/hc_blau_neon] >[OFF:DELETE:http://funkstrom.hackcenter/socket/hc_blau_neon]"  }
+Switch fs_licht_halogen "Licht Halogen" <socket> (Shutdown, ShutdownHackcenter, HackcenterLights)  { http=">[ON:POST:http://funkstrom.hackcenter/socket/hc_licht_halogen] >[OFF:DELETE:http://funkstrom.hackcenter/socket/hc_licht_halogen]"  }
+Switch fs_ledboard "Ledboard" <socket> (Shutdown, ShutdownHackcenter, HackcenterLights)  { http=">[ON:POST:http://funkstrom.hackcenter/socket/hc_ledboard] >[OFF:DELETE:http://funkstrom.hackcenter/socket/hc_ledboard]"  }
+
+/* LOUNGE */
+
+Switch fs_beamer "Beamer" <socket> { http=">[ON:POST:http://funkstrom.lounge/socket/l_beamer] >[OFF:DELETE:http://funkstrom.lounge/socket/l_beamer]"  }
+Switch fs_led_bars "LED Bars" <socket> (Shutdown, ShutdownLounge, LoungeLights)  { http=">[ON:POST:http://funkstrom.lounge/socket/l_led_bars] >[OFF:DELETE:http://funkstrom.lounge/socket/l_led_bars]"  }
+Switch fs_nyancat "NyanCat" <socket> (Shutdown, ShutdownLounge, LoungeLights)  { http=">[ON:POST:http://funkstrom.lounge/socket/l_nyancat] >[OFF:DELETE:http://funkstrom.lounge/socket/l_nyancat]"  }
+Switch fs_bookshelf "Bookshelf" <socket> (Shutdown, ShutdownLounge, LoungeLights)  { http=">[ON:POST:http://funkstrom.lounge/socket/l_bookshelf] >[OFF:DELETE:http://funkstrom.lounge/socket/l_bookshelf]"  }
+Switch fs_pedestal_tv "TV" <socket> (Shutdown, ShutdownLounge, Lounge)  { http=">[ON:POST:http://funkstrom.lounge/socket/l_pedestal_tv] >[OFF:DELETE:http://funkstrom.lounge/socket/l_pedestal_tv]"  }
+Switch fs_night_sky "NightSky" <socket> (Shutdown, ShutdownLounge, Lounge, LoungeLights)  { http=">[ON:POST:http://funkstrom.lounge/socket/l_night_sky] >[OFF:DELETE:http://funkstrom.lounge/socket/l_night_sky]"  }
