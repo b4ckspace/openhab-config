@@ -1,3 +1,7 @@
+/*
+* Rooms
+*/ 
 
-Number th_hackcenter_window_left "Hackcenter window left [%.1f °C]" <heating> { homematic="id=KEQXXXXXXX, channel=4, parameter=SET_TEMPERATURE" }
-Number th_hackcenter_chimney "Hackcenter chimney [%.1f °C]" <heating> { homematic="id=KEQXXXXXXX, channel=4, parameter=SET_TEMPERATURE" }
+Number th_hackcenter "Hackcenter [%.1f °C]" <heating> { homematic="address=INT0000001, channel=1, parameter=SET_TEMPERATURE" }
+Number th_lounge "Lounge [%.1f °C]" <heating> { homematic="address=INT0000002, channel=1, parameter=SET_TEMPERATURE" }
+Number th_workshop "Werkstatt [%.1f °C]" <heating> { homematic="address=INT0000003, channel=1, parameter=SET_TEMPERATURE" }
