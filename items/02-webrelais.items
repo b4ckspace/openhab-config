@@ -1,3 +1,5 @@
 Switch wr_exit_white "Exit: White" <slider> (Shutdown) { http=">[ON:POST:http://webrelais.bckspc.de/relais/3] >[OFF:DELETE:http://webrelais.bckspc.de/relais/3]"  }
 Switch wr_exit_red "Exit: Red" <slider> (Shutdown) { http=">[ON:POST:http://webrelais.bckspc.de/relais/4] >[OFF:DELETE:http://webrelais.bckspc.de/relais/4]"  }
 Switch wr_alarm "Alarm" <siren> { http=">[ON:POST:http://webrelais.bckspc.de/relais/5] >[OFF:DELETE:http://webrelais.bckspc.de/relais/5]"  }
+Switch wr_heater "Gastherme" <slider> { http=">[ON:POST:http://webrelais.bckspc.de/relais/6] >[OFF:DELETE:http://webrelais.bckspc.de/relais/6]"  }
+Switch wr_mailbox "Briefkasten" <keyring> { http=">[ON:POST:http://webrelais.bckspc.de/relais/7] >[OFF:DELETE:http://webrelais.bckspc.de/relais/7]"  }
