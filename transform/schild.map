@@ -1,0 +1,3 @@
+OFF=0
+STANDBY=1
+ON=2
