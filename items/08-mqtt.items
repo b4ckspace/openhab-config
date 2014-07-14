@@ -1,0 +1,14 @@
+Contact doorLock "Türschloss [%s]" <lock> {mqtt="<[space:sensor/door/lock:state:MAP(contact.map)]"}
+Contact doorFrame "Türrahmen [%s]" <door> {mqtt="<[space:sensor/door/frame:state:MAP(contact.map)]"}
+Contact backdoorLock "Hintertür Schloss [%s]" <lock> {mqtt="<[space:sensor/backdoor/lock:state:MAP(contact.map)]"}
+
+Number radiationCPM "Strahlung [%.2f CPM]" <energy> {mqtt="<[space:sensor/radiation/cpm:state:default]"}
+Number radiationUSV "Strahlung [%.2f uSv/h]" <energy> {mqtt="<[space:sensor/radiation/uSv:state:default]"}
+
+Number memberCount "Mitglieder anwesend [%d]" <present> {mqtt="<[space:sensor/space/member/count:state:default]"}
+Number accountBalance "Kontostand [%.2f €]" <present> {mqtt="<[space:sensor/space/accountBalance:state:default]"}
+
+Switch doorButton "Doorbutton [%s]" <shield> {mqtt="<[space:sensor/door/button:state:MAP(button.map)]"}
+Switch doorBell "Doorbell [%s]" <shield> {mqtt="<[space:sensor/door/bell:state:MAP(button.map)]"}
+ 
+String alarmMessage "Letzter Alarm" <siren> {mqtt="<[space:psa/alarm:state:default]"}
