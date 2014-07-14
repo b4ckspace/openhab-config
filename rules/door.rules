@@ -1,0 +1,54 @@
+rule "Door frame opens"
+when
+	Item doorFrame changed from CLOSED to OPEN
+then
+	sendCommand(wr_exit_red, ON)
+end
+
+rule "Door frame closes"
+when
+	Item doorFrame changed from OPEN to CLOSED
+then
+	sendCommand(wr_exit_red, OFF)
+end
+
+
+rule "Door unlocked"
+when
+	Item doorLock changed from CLOSED to OPEN
+then
+	sendCommand(wr_mailbox, ON)
+	sendCommand(fs_ledboard, ON)
+	sendCommand(fs_nyancat, ON)
+	sendCommand(fs_music_amp, ON)
+	
+	sendCommand(wr_exit_white, ON)
+	createTimer(now.plusMinutes(3)) [|
+		sendCommand(wr_exit_white, OFF)
+	]
+end
+
+rule "Door locked"
+when
+	Item doorLock changed from OPEN to CLOSED
+then	
+	// Just in case a timer is running, disable it here 
+	// do anything else here, the light should be switched off anyway
+	sendCommand(wr_exit_white, OFF)
+
+end
+	
+	
+rule "Doorbell pressed"
+when
+	Item doorBell changed to ON
+then
+	if(memberCount.state > 0) {
+		sendCommand(wr_alarm, ON)
+		createTimer(now.plusSeconds(5)) [|
+			sendCommand(wr_alarm, OFF)
+		]
+	} else {
+		//sendMail("test@foo.de", "Doorbell", "Doorbell rang, but no-one was there")	
+	}
+end

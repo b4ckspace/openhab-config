@@ -1,0 +1,23 @@
+rule "Someone is here"
+when 
+	Item memberCount changed from 0
+then
+	sendCommand(wr_heater, ON)
+end
+
+rule "No one is there anymore"
+when
+	Item memberCount changed to 0
+then
+	sendCommand(fs_ledboard, OFF)
+	sendCommand(fs_nyancat, OFF)
+	sendCommand(fs_music_amp, OFF)
+	
+	// Shutdown every light
+	sendCommand(fs_licht_halogen, OFF)
+	sendCommand(fs_licht_regal, OFF)
+	sendCommand(fs_licht_oben, OFF)
+	
+	sendCommand(wr_mailbox, OFF)
+	sendCommand(wr_heater, OFF)
+end

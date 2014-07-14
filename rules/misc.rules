@@ -1,0 +1,12 @@
+rule "Alarm message appeared"
+when
+	Item alarmMessage changed
+then
+	if(memberCount.state > 0) {
+		sendCommand(wr_alarm, ON)
+		createTimer(now.plusSeconds(5)) [|
+			sendCommand(wr_alarm, OFF)
+		]
+	}
+end
+
