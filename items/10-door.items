@@ -1,0 +1,1 @@
+Switch Door { exec=">[OFF:/opt/openhab/helper/door.sh CLOSE]" }

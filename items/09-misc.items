@@ -1,1 +1,9 @@
-/*Switch schild { udp=">[ON:10.1.20.16:10003:'2'], >[OFF:10.1.20.16:10003:'0']" }*/
+DateTime Sunset_Time    "Sunset [%1$tH:%1$tM]"   {astro="type=SUNSET_TIME"}
+Switch   Sunset_Event                            {astro="type=SUNSET"}
+
+Switch Schild { exec=">[ON:/opt/openhab/helper/schild.sh ON] >[OFF:/opt/openhab/helper/schild.sh STANDBY]" }
+
+Number debugNumberItem
+String debugItem
+Switch testItem
+

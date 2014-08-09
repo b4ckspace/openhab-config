@@ -1,6 +1,6 @@
-Group HackcenterLights
-Group LoungeLights
-Group Shutdown
-Group ShutdownHackcenter
-Group ShutdownLounge
+Group Boot
 
+Group ThermGroup
+Group ThermHackcenter
+Group ThermLounge
+Group ThermWorkshop

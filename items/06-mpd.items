@@ -1,2 +1,2 @@
-Switch Mpd_Hackcenter_StartPause "MPD Start/Pause" { mpd="ON:hackcenter:play, OFF:hackcenter:pause" }
+Switch Mpd_Hackcenter_StartPause "MPD Start/Pause" (Shutdown, ShutdownHackcenter) { mpd="ON:hackcenter:play, OFF:hackcenter:pause" }
 Dimmer Mpd_Hackcenter_Volume "MPD Volume" { mpd="INCREASE:hackcenter:volume_increase, DECREASE:hackcenter:volume_decrease, PERCENT:hackcenter:volume" }

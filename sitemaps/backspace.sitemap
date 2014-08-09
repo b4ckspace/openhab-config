@@ -4,14 +4,14 @@ sitemap backspace label="Backspace"
 		Switch item=Shutdown label="Shutdown All" mappings=[OFF="Engage"]
 		Switch item=ShutdownHackcenter label="Shutdown Hackcenter" mappings=[OFF="Engage"]
 		Switch item=ShutdownLounge label="Shutdown Lounge" mappings=[OFF="Engage"]
-    }
-
+        }
 	Frame label="Spacecontrol" {
 
 		Text label="Hackcenter" icon="cellar" {
 
 			Frame label="Temperature" {
-				Setpoint item=th_hackcenter_chimney label="Thermostat [%.2f]" minValue=4.0 maxValue=26.0 step=0.5
+				Setpoint item=th_hackcenter label="Thermostate [%.2f]" minValue=4.0 maxValue=26.0 step=0.5
+				Text item=temp_hackcenter_garlic label="Temperatur [%.2f] °C"
 			}
 
 			Frame label="Control" {
@@ -19,11 +19,13 @@ sitemap backspace label="Backspace"
 				Switch item=wr_exit_white
 				Switch item=wr_exit_red
 				Switch item=wr_alarm
+				Switch item=wr_mailbox
 				Switch item=fs_licht_halogen
 				Switch item=fs_licht_oben
 				Switch item=fs_licht_regal
 				Switch item=fs_licht_neon
 				Switch item=fs_ledboard
+				Switch item=fs_music_amp
 			}
 
 			Frame label="Music" {
@@ -45,16 +47,16 @@ sitemap backspace label="Backspace"
 				Switch item=fs_bookshelf
 				Switch item=fs_pedestal_tv
 				Switch item=fs_night_sky
-				Switch item=pc_kitchen_light
 				Switch item=pc_entry_light
 				Switch item=pc_canvas_light
 				Switch item=pc_podest_light
 			}
 		}
 
-		Text label="IT" icon="kitchen" {
-			Text item=temp_rack
-			Text item=load_1m_scarlet
+		Text label="Küche" icon="kitchen" {
+			Switch item=pc_kitchen_light
+			Switch item=pc_oven
+			Switch item=pc_powersockets
 		}
 
 	}
@@ -65,6 +67,8 @@ sitemap backspace label="Backspace"
 			Switch item=wr_exit_white
 			Switch item=wr_exit_red
 			Switch item=wr_alarm
+			Switch item=wr_heater
+			Switch item=wr_mailbox
 		}
 
 		Text label="Powerctrl" icon="settings" {
@@ -72,6 +76,8 @@ sitemap backspace label="Backspace"
 			Switch item=pc_entry_light
 			Switch item=pc_canvas_light
 			Switch item=pc_podest_light
+			Switch item=pc_oven
+			Switch item=pc_powersockets
 		}
 
 		Text label="Funkstrom" icon="socket" {
@@ -79,12 +85,20 @@ sitemap backspace label="Backspace"
 			Switch item=fs_licht_oben
 			Switch item=fs_licht_regal
 			Switch item=fs_licht_neon
+			Switch item=fs_music_amp
 			Switch item=fs_beamer
 			Switch item=fs_led_bars
 			Switch item=fs_nyancat
 			Switch item=fs_bookshelf
 			Switch item=fs_pedestal_tv
 			Switch item=fs_night_sky
+
+		}
+
+		Text label="Thermostats" icon="heating" {
+			Setpoint item=th_hackcenter minValue=4.0 maxValue=26.0 step=0.5
+			Setpoint item=th_lounge minValue=4.0 maxValue=26.0 step=0.5
+			Setpoint item=th_workshop minValue=4.0 maxValue=26.0 step=0.5
 		}
 
 		Text label="Temperatures" icon="temperature" {
@@ -100,15 +114,28 @@ sitemap backspace label="Backspace"
 		Text label="MPD" icon="video" {
 			Switch item=Mpd_Hackcenter_StartPause label="Hackcenter Start/Pause"
 		}
+
+		Text label="Testing" icon="bath" {
+			Setpoint item=debugNumberItem label="Test [%.2f]" minValue=6.0 maxValue=26.0 step=0.5
+			Text item=doorLock
+			Text item=doorFrame
+			Text item=doorBell
+			Text item=backdoorLock
+			Switch item=testItem
+			Switch item=Schild
+			Chart item=memberCount period=2W
+		}
 	}
 
 	Frame label="Information" {
-		Text item=account_balance
+		Text item=accountBalance
 		Text item=temp_hackcenter_garlic
 		Text item=temp_lounge
 		Text item=temp_aussen
-		Text item=members_present
+		Text item=memberCount
 		Text item=alive_hosts
+		Text item=radiationCPM
+		Text item=radiationUSV
 	}
 
 }

@@ -9,15 +9,10 @@ rule "No one is there anymore"
 when
 	Item memberCount changed to 0
 then
-	sendCommand(fs_ledboard, OFF)
-	sendCommand(fs_nyancat, OFF)
-	sendCommand(fs_music_amp, OFF)
+	sendCommand(Shutdown, OFF)
 	
-	// Shutdown every light
-	sendCommand(fs_licht_halogen, OFF)
-	sendCommand(fs_licht_regal, OFF)
-	sendCommand(fs_licht_oben, OFF)
-	
-	sendCommand(wr_mailbox, OFF)
-	sendCommand(wr_heater, OFF)
+	if(doorLock.state == OPEN) {
+		sendCommand(Door, OFF);
+		sendMail("schinken@hackerspace-bamberg.de", "Space-Security", "Tür wurde automatisch abgesperrt, da niemand da ist")	
+	}
 end

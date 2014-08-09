@@ -1,0 +1,37 @@
+import org.openhab.core.library.types.DateTimeType
+
+rule "Switch Schild on"
+when
+	Item doorLock changed from CLOSED to OPEN or
+	Item memberCount changed from 0
+then
+	// Only switch on immediately if it's already 30 min before sunset
+	if(now.plusMinutes(30).isAfter((Sunset_Time.state as DateTimeType).calendar.timeInMillis)) {
+		sendCommand(Schild, ON)
+	}
+end
+
+rule "Switch Schild off"
+when
+	Item memberCount changed to 0
+then
+	logInfo("schild", "Schild is switched off, no ones there anymore")
+	sendCommand(Schild, OFF)
+end
+
+rule "Check for Sunset to switch schild on"
+when
+	Time cron "0 0/5 * * * ?"
+then
+	logInfo("schild", "Checking for open and sunset")
+
+	// Check every 5 minutes if the schild could be switched on
+	// depending on 30 min before sunset and member state
+	if((Schild.state == OFF || Schild.state == Uninitialized) &&
+	   (memberCount.state > 0 || doorLock.state == OPEN) &&
+	    now.plusMinutes(30).isAfter((Sunset_Time.state as DateTimeType).calendar.timeInMillis)) {
+		sendCommand(Schild, ON)
+		logInfo("schild", "Schild is switched on, because it's now dark enough")
+	}
+end
+ 

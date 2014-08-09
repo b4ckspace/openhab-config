@@ -1,0 +1,57 @@
+import org.openhab.core.library.types.DecimalType
+import org.openhab.model.script.actions.Timer
+
+/*
+var Timer thermHackcenterChangedTimer = null
+var Timer thermLoungeChangedTimer = null
+*/
+
+rule "Thermostats: No ones there anymore"
+when
+	Item memberCount changed to 0
+then
+	logInfo("thermostats", "Cool down space to 12.0")
+	sendCommand(ThermGroup, 12);
+end
+
+/*
+rule "Hackcenter thermostat changed"
+when
+	Item th_hackcenter_wleft changed or
+	Item th_hackcenter_wright changed or
+	Item th_hackcenter_chimney changed
+then
+	if(thermHackcenterChangedTimer != null) {
+		logInfo("thermostats", "Cleared timer")
+		thermHackcenterChangedTimer.cancel;
+		thermHackcenterChangedTimer = null;
+	}
+
+	// Reschedule timer to cover latest change
+	logInfo("backspace", "Scheduled timer")
+	thermHackcenterChangedTimer = createTimer(now.plusSeconds(20)) [|      
+		logError("thermostats", "Updating temperature in hackcenter")
+		sendCommand(ThermHackcenter, (th_hackcenter_chimney.state as DecimalType))
+	]
+end
+
+rule "Lounge thermostat changed"
+when
+	Item th_lounge_wleft changed or
+	Item th_lounge_wmid changed or
+	Item th_lounge_wright changed
+then
+	if(thermLoungeChangedTimer != null) {
+		logInfo("thermostats", "Cleared timer for lounge")
+		thermLoungeChangedTimer.cancel;
+		thermLoungeChangedTimer = null;
+	}
+
+
+	// Reschedule timer to cover latest change
+	thermLoungeChangedTimer = createTimer(now.plusSeconds(20)) [|      
+		logError("thermostats", "Updating temperature in lounge")
+		sendCommand(ThermLounge, (th_lounge_wleft.state as DecimalType))
+	]
+end
+*/

@@ -1,7 +1,21 @@
-/*
-* Rooms
-*/ 
+/* Hackcenter */
 
-Number th_hackcenter "Hackcenter [%.1f °C]" <heating> { homematic="address=INT0000001, channel=1, parameter=SET_TEMPERATURE" }
-Number th_lounge "Lounge [%.1f °C]" <heating> { homematic="address=INT0000002, channel=1, parameter=SET_TEMPERATURE" }
-Number th_workshop "Werkstatt [%.1f °C]" <heating> { homematic="address=INT0000003, channel=1, parameter=SET_TEMPERATURE" }
+Number th_hackcenter "Hackcenter [%.1f °C]" <heating> (ThermGroup) { homematic="address=FOOBAR, parameter=SET_TEMPERATURE" }
+
+Number th_hackcenter_wleft "Fenster links [%.1f °C]" <heating> (ThermHackcenter) { homematic="address=FOOBAR, parameter=SET_TEMPERATURE" }
+Number th_hackcenter_wright "Fenster rechts [%.1f °C]" <heating> (ThermHackcenter) { homematic="address=FOOBAR, parameter=SET_TEMPERATURE" }
+Number th_hackcenter_chimney "Kamin [%.1f °C]" <heating> (ThermHackcenter) { homematic="address=FOOBAR, parameter=SET_TEMPERATURE" }
+
+/* LOUNGE */
+
+Number th_lounge "Lounge [%.1f °C]" <heating> (ThermGroup) { homematic="address=FOOBAR, parameter=SET_TEMPERATURE" }
+
+Number th_lounge_wleft "Fenster links [%.1f °C]" <heating> (ThermLounge) { homematic="address=FOOBAR, parameter=SET_TEMPERATURE" }
+Number th_lounge_wmid "Fenster mitte [%.1f °C]" <heating> (ThermLounge) { homematic="address=FOOBAR, parameter=SET_TEMPERATURE" }
+Number th_lounge_wright "Fenster rechts [%.1f °C]" <heating> (ThermLounge) { homematic="address=FOOBAR, parameter=SET_TEMPERATURE" }
+
+/* WORKSHOP */
+
+Number th_workshop "Werkstatt [%.1f °C]" <heating> (ThermGroup) { homematic="address=FOOBAR, parameter=SET_TEMPERATURE" }
+
+Number th_workshop_w "Fenster [%.1f °C]" <heating> (ThermWorkshop) { homematic="address=FOOBAR, parameter=SET_TEMPERATURE" }

@@ -1,3 +1,4 @@
-Group:Switch:OR(ON, OFF) HackcenterLights "Hackcenter Lights [(%d)]"
-Group:Switch:OR(ON, OFF) LoungeLights "Hackcenter Lights [(%d)]"
+
+Group:Switch:OR(ON, OFF) ShutdownHackcenter "Hackcenter Lights [(%d)]"
+Group:Switch:OR(ON, OFF) ShutdownLounge "Hackcenter Lights [(%d)]"
 Group:Switch:OR(ON, OFF) Shutdown "Shutdown [(%d)]"

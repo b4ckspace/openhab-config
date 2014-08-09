@@ -1,3 +1,17 @@
+import org.openhab.core.library.types.DateTimeType
+
+var boolean scheduledDoorLock = false
+
+rule "Doorbutton pressed"
+when
+	Item doorButton changed to ON
+then
+	if(doorFrame.state == OPEN) {
+		logInfo("door", "Doorlock scheduled")
+		scheduledDoorLock = true;
+	}
+end
+
 rule "Door frame opens"
 when
 	Item doorFrame changed from CLOSED to OPEN
@@ -10,6 +24,21 @@ when
 	Item doorFrame changed from OPEN to CLOSED
 then
 	sendCommand(wr_exit_red, OFF)
+
+	if(scheduledDoorLock) {
+		logInfo("door", "Processing scheduled doorlock");
+		sendCommand(Door, OFF);
+		scheduledDoorLock = false;
+	}
+
+	// Edge-case: If someone locks the door, and no one is detected, 
+	// switch everything off again. 
+	// Todo: Add Timeout!
+	/*
+	if(memberCount.state == 0) {
+		sendCommand(Shutdown, OFF)
+	}
+	*/
 end
 
 
@@ -17,15 +46,31 @@ rule "Door unlocked"
 when
 	Item doorLock changed from CLOSED to OPEN
 then
-	sendCommand(wr_mailbox, ON)
-	sendCommand(fs_ledboard, ON)
-	sendCommand(fs_nyancat, ON)
-	sendCommand(fs_music_amp, ON)
+
+	sendCommand(Boot, ON)
 	
 	sendCommand(wr_exit_white, ON)
 	createTimer(now.plusMinutes(3)) [|
 		sendCommand(wr_exit_white, OFF)
 	]
+
+    // For security: Check 30 minutes afterwars of the there's
+    // still no member -> lock everthing
+	createTimer(now.plusMinutes(30)) [|
+        if(memberCount.state == 0 && doorLock.state == OPEN) {
+		    sendCommand(Door, OFF);
+		    sendMail("schinken@hackerspace-bamberg.de", "Security: Ubefugter Zutritt", "Jemand hat die Tür aufgesperrt, wurde aber nicht als Mitglied erkannt. Automatisch abgesperrt.")	
+        }
+	]
+	
+	// Also switch on light, 30 minutes before sunset, if
+	// the door is unlocked
+	if(now.plusMinutes(30).isAfter(
+		(Sunset_Time.state as DateTimeType).calendar.timeInMillis
+	)) {
+		sendCommand(pc_entry_light, ON)
+	}
+
 end
 
 rule "Door locked"
@@ -35,7 +80,6 @@ then
 	// Just in case a timer is running, disable it here 
 	// do anything else here, the light should be switched off anyway
 	sendCommand(wr_exit_white, OFF)
-
 end
 	
 	
@@ -49,6 +93,6 @@ then
 			sendCommand(wr_alarm, OFF)
 		]
 	} else {
-		//sendMail("test@foo.de", "Doorbell", "Doorbell rang, but no-one was there")	
+		sendMail("schinken@hackerspace-bamberg.de", "Türklingel verpasst", "Es hat jemand an der Tür geklingelt, doch es war niemand anwesend")	
 	}
 end
