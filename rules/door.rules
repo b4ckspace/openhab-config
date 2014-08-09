@@ -54,13 +54,13 @@ then
 		sendCommand(wr_exit_white, OFF)
 	]
 
-    // For security: Check 30 minutes afterwars of the there's
-    // still no member -> lock everthing
+	// For security: Check 30 minutes afterwars of the there's
+	// still no member -> lock everthing
 	createTimer(now.plusMinutes(30)) [|
-        if(memberCount.state == 0 && doorLock.state == OPEN) {
-		    sendCommand(Door, OFF);
-		    sendMail("schinken@hackerspace-bamberg.de", "Security: Ubefugter Zutritt", "Jemand hat die Tür aufgesperrt, wurde aber nicht als Mitglied erkannt. Automatisch abgesperrt.")	
-        }
+	    if(memberCount.state == 0 && doorLock.state == OPEN) {
+		sendCommand(Door, OFF);
+		sendMail("schinken@hackerspace-bamberg.de", "Security: Ubefugter Zutritt", "Jemand hat die Tür aufgesperrt, wurde aber nicht als Mitglied erkannt. Automatisch abgesperrt.")	
+	    }
 	]
 	
 	// Also switch on light, 30 minutes before sunset, if
