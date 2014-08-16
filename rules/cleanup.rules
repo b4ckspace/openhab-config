@@ -1,0 +1,76 @@
+
+
+var Number alarmNotBeforeHour = 16
+var Number alarmNotAfterHour = 23
+
+var Number minimumIntervalDays = 8
+var Number maximumIntervalDays = 14
+var Number minimumMembersPresent = 4
+
+rule "Cleanup Alarm begins"
+when
+    Item cleanupAlarm changed to ON
+then
+    // Switch stuff on
+    sendMail("security@hackerspace-bamberg.de", "Debug: Cleanup Alarm begin", "Cleanup alarm was triggered");
+
+    /*
+    * TODO:
+    * - Alarm light on
+    * - Send message to ledboard
+    * - Play other music on MPD
+    * - Trigger panic alarm in lounge if ledbars are on
+    */
+
+    // Switch off after a certain time
+    createTimer(now.plusMinutes(10)) [|
+        sendCommand(cleanupAlarm, OFF);
+    ]
+end
+
+rule "Cleanup Alarm ends"
+when
+    Item cleanupAlarm changed to OFF
+then
+    // Switch stuff off
+    sendMail("security@hackerspace-bamberg.de", "Debug: Cleanup Alarm end", "Cleanup alarm ended");
+
+    // Everything off again ;) 
+end
+
+rule "Check for cleanup alarm"
+when
+    Time cron "0 0/23 * * * ?"
+then
+    /*
+    * Check every 23 minutes
+    *
+    * Only if the door is not locked (which may indicate sleeping members) and
+    * no one is watching a movie.
+    *
+    * The memberCount should be above a sane value, because no one want's to clean
+    * up alone.
+    *
+    * Also check if the date range is in a good range, no cleanup alarm in the midnight 
+    * is triggered.
+    *
+    * Plus: Add a little bit of random
+    *
+    * TODO:
+    *  - Try to check if there are different members since the last cleanup (not that easy)
+    */
+
+    if(doorLock.state == OPEN && fs_beamer.state == OFF &&
+        memberCount.state >= minimumMembersPresent &&
+        now.getHourOfDay() >= alarmNotBeforeHour && now.getHourOfDay() <= alarmNotAfterHour) {
+
+        if(cleanupAlarm.changedSince(now.minusDays(minimumIntervalDays)) && Math::random > 0.8) {
+            sendCommand(cleanupAlarm, ON);
+        } else if(!cleanupAlarm.changedSince(now.minusDays(maximumIntervalDays))) {
+            // No matter what, maximumIntervalDays is enough. We have to clean up. Seriosly
+            sendCommand(cleanupAlarm, ON);
+        }
+
+    }
+end
+ 
