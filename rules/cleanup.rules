@@ -67,7 +67,7 @@ then
         if(cleanupAlarm.changedSince(now.minusDays(minimumIntervalDays)) && Math::random > 0.8) {
             sendCommand(cleanupAlarm, ON);
         } else if(!cleanupAlarm.changedSince(now.minusDays(maximumIntervalDays))) {
-            // No matter what, maximumIntervalDays is enough. We have to clean up. Seriosly
+            // No matter what, maximumIntervalDays is enough. We have to clean up. Seriously
             sendCommand(cleanupAlarm, ON);
         }
 
