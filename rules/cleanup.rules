@@ -44,7 +44,7 @@ end
 
 rule "Cleanup Alarm manual override"
 when
-    Item cleanUpAlarmOverride changed to ON
+    Item cleanupAlarmOverride changed to OFF
 then
     sendCommand(cleanupAlarm, OFF)
 end
