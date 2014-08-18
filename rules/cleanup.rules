@@ -68,7 +68,7 @@ then
         memberCount.state >= minimumMembersPresent && memberCount.historicState(now.minusHours(1)) && 
         now.getHourOfDay() >= alarmNotBeforeHour && now.getHourOfDay() <= alarmNotAfterHour) {
 
-        if(cleanupAlarm.changedSince(now.minusDays(minimumIntervalDays)) &&
+        if(!cleanupAlarm.changedSince(now.minusDays(minimumIntervalDays)) &&
             memberNames.state != memberNames.historicState(lastCleanupAlarm) && 
             Math::random > 0.9) {
 
