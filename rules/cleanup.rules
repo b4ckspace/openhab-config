@@ -42,6 +42,13 @@ then
     // Everything off again ;) 
 end
 
+rule "Cleanup Alarm manual override"
+when
+    Item cleanUpAlarmOverride changed to ON
+then
+    sendCommand(cleanupAlarm, OFF)
+end
+
 rule "Check for cleanup alarm"
 when
     Time cron "0 0/23 * * * ?"
