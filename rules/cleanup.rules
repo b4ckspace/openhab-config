@@ -1,4 +1,5 @@
 
+var lastCleanupAlarm = now()
 
 var Number alarmNotBeforeHour = 16
 var Number alarmNotAfterHour = 23
@@ -11,8 +12,11 @@ rule "Cleanup Alarm begins"
 when
     Item cleanupAlarm changed to ON
 then
+
+    lastCleanupAlarm = now()
+
     // Switch stuff on
-    sendMail("security@hackerspace-bamberg.de", "Debug: Cleanup Alarm begin", "Cleanup alarm was triggered");
+    sendMail("security@hackerspace-bamberg.de", "Debug: Cleanup Alarm begin", "Cleanup alarm was triggered")
 
     /*
     * TODO:
@@ -24,7 +28,7 @@ then
 
     // Switch off after a certain time
     createTimer(now.plusMinutes(10)) [|
-        sendCommand(cleanupAlarm, OFF);
+        sendCommand(cleanupAlarm, OFF)
     ]
 end
 
@@ -33,7 +37,7 @@ when
     Item cleanupAlarm changed to OFF
 then
     // Switch stuff off
-    sendMail("security@hackerspace-bamberg.de", "Debug: Cleanup Alarm end", "Cleanup alarm ended");
+    sendMail("security@hackerspace-bamberg.de", "Debug: Cleanup Alarm end", "Cleanup alarm ended")
 
     // Everything off again ;) 
 end
@@ -50,24 +54,27 @@ then
     *
     * The memberCount should be above a sane value, because no one want's to clean
     * up alone. Also check if the members are at least an hour here, so one can
-    * just sit and relax for a while
+    * just sit and relax for a while.
+    *
+    * Also check if there are different members than the last time
     *
     * Also check if the date range is in a good range, no cleanup alarm in the midnight 
     * is triggered.
     *
     * Plus: Add a little bit of random
-    *
-    * TODO:
-    *  - Try to check if there are different members since the last cleanup (not that easy)
     */
 
     if(doorLock.state == OPEN && fs_beamer.state == OFF &&
-        memberCount.state >= minimumMembersPresent && memberCount.historicState(mow.minusHours(1)) && 
+        memberCount.state >= minimumMembersPresent && memberCount.historicState(now.minusHours(1)) && 
         now.getHourOfDay() >= alarmNotBeforeHour && now.getHourOfDay() <= alarmNotAfterHour) {
 
-        if(cleanupAlarm.changedSince(now.minusDays(minimumIntervalDays)) && Math::random > 0.9) {
+        if(cleanupAlarm.changedSince(now.minusDays(minimumIntervalDays)) &&
+            memberNames.state != memberNames.historicState(lastCleanupAlarm) && 
+            Math::random > 0.9) {
+
             sendCommand(cleanupAlarm, ON);
         } else if(!cleanupAlarm.changedSince(now.minusDays(maximumIntervalDays))) {
+
             // No matter what, maximumIntervalDays is enough. We have to clean up. Seriously
             sendCommand(cleanupAlarm, ON);
         }
