@@ -1,4 +1,3 @@
-
 var lastCleanupAlarm = now()
 
 var Number alarmNotBeforeHour = 16
@@ -7,6 +6,13 @@ var Number alarmNotAfterHour = 23
 var Number minimumIntervalDays = 8
 var Number maximumIntervalDays = 14
 var Number minimumMembersPresent = 4
+
+rule "Enable Cleanup Alarm on system boot"
+when
+    System started
+then
+    sendCommand(cleanupAlarmEnable, ON)
+end
 
 rule "Cleanup Alarm begins"
 when
@@ -44,9 +50,12 @@ end
 
 rule "Cleanup Alarm manual override"
 when
-    Item cleanupAlarmOverride changed to OFF
+    Item cleanupAlarmEnable changed to OFF
 then
-    sendCommand(cleanupAlarm, OFF)
+    // If the alarm is already ON, and one wants to disable it
+    if(cleanupAlarm.state == ON) {
+        sendCommand(cleanupAlarm, OFF)
+    }
 end
 
 rule "Check for cleanup alarm"
@@ -54,7 +63,7 @@ when
     Time cron "0 0/23 * * * ?"
 then
     /*
-    * Check every 23 minutes
+    * Check every 23 minutes, only if cleanupAlarm is enabled
     *
     * Only if the door is not locked (which may indicate sleeping members) and
     * no one is watching a movie (don't want to interrupt people)
@@ -71,7 +80,8 @@ then
     * Plus: Add a little bit of random
     */
 
-    if(doorLock.state == OPEN && fs_beamer.state == OFF &&
+    if(cleanupAlarmEnable.state == ON &&
+        doorLock.state == OPEN && fs_beamer.state == OFF &&
         memberCount.state >= minimumMembersPresent && memberCount.historicState(now.minusHours(1)) && 
         now.getHourOfDay() >= alarmNotBeforeHour && now.getHourOfDay() <= alarmNotAfterHour) {
 
