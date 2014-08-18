@@ -1,7 +1,12 @@
 DateTime Sunset_Time    "Sunset [%1$tH:%1$tM]"   {astro="type=SUNSET_TIME"}
 Switch   Sunset_Event                            {astro="type=SUNSET"}
 
+Switch cleanupAlarmEnable
+Switch cleanupAlarm
+
 Switch Schild { exec=">[ON:/opt/openhab/helper/schild.sh ON] >[OFF:/opt/openhab/helper/schild.sh STANDBY]" }
+String memberNames "Members" <network> { http="<[spaceApi:60000:JS(spaceApiMembers.js)]" }
+
 
 Number debugNumberItem
 String debugItem

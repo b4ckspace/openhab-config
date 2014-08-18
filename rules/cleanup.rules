@@ -80,17 +80,21 @@ then
     * Plus: Add a little bit of random
     */
 
+    logInfo("cleanupAlarm", "Checking for conditions for cleanup")
+
     if(cleanupAlarmEnable.state == ON &&
         doorLock.state == OPEN && fs_beamer.state == OFF &&
-        memberCount.state >= minimumMembersPresent && memberCount.historicState(now.minusHours(1)) && 
+        memberCount.state >= minimumMembersPresent && memberCount.historicState(now.minusHours(1)).state >= minimumMembersPresent && 
         now.getHourOfDay() >= alarmNotBeforeHour && now.getHourOfDay() <= alarmNotAfterHour) {
 
-        if(!cleanupAlarm.changedSince(now.minusDays(minimumIntervalDays)) &&
-            memberNames.state != memberNames.historicState(lastCleanupAlarm) && 
+    	logInfo("cleanupAlarm", "Criterias met, checking for last alarm + random")
+
+        if(cleanupAlarm.changedSince(now.minusDays(minimumIntervalDays)).state == OFF &&
+            memberNames.state != memberNames.historicState(lastCleanupAlarm).state && 
             Math::random > 0.9) {
 
             sendCommand(cleanupAlarm, ON);
-        } else if(!cleanupAlarm.changedSince(now.minusDays(maximumIntervalDays))) {
+        } else if(cleanupAlarm.changedSince(now.minusDays(maximumIntervalDays)).state == OFF) {
 
             // No matter what, maximumIntervalDays is enough. We have to clean up. Seriously
             sendCommand(cleanupAlarm, ON);
