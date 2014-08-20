@@ -1,4 +1,5 @@
-var lastCleanupAlarm = now()
+import org.openhab.core.library.types.DateTimeType
+import org.joda.time.DateTime
 
 var Number alarmNotBeforeHour = 16
 var Number alarmNotAfterHour = 23
@@ -7,11 +8,22 @@ var Number minimumIntervalDays = 8
 var Number maximumIntervalDays = 14
 var Number minimumMembersPresent = 4
 
-rule "Enable Cleanup Alarm on system boot"
-when
+rule "Enable Cleanup Alarm on system start"
     System started
 then
     sendCommand(cleanupAlarmEnable, ON)
+
+    if(cleanupAlarm.state == Uninitialized) {
+	sendCommand(cleanupAlarm, OFF)
+    }
+
+    if(fs_beamer.state == Uninitialized) {
+	sendCommand(fs_beamer, OFF)
+    }
+	 
+    if(lastCleanupAlarm.state == Uninizialized) {
+        postUpdate(lastCleanupAlarm, new DateTimeType())
+    }
 end
 
 rule "Cleanup Alarm begins"
@@ -19,7 +31,7 @@ when
     Item cleanupAlarm changed to ON
 then
 
-    lastCleanupAlarm = now()
+    postUpdate(lastCleanupAlarm, new DateTimeType())
 
     // Switch stuff on
     sendMail("security@hackerspace-bamberg.de", "Debug: Cleanup Alarm begin", "Cleanup alarm was triggered")
@@ -80,6 +92,10 @@ then
     * Plus: Add a little bit of random
     */
 
+    // We need to convert it to yodatime before using it with historicState or changedSince
+    val lastCleanupJodaTime = new DateTime((lastCleanupAlarm.state as DateTimeType).calendar.timeInMillis)
+    val randomValue = Math::random
+
     logInfo("cleanupAlarm", "Checking for conditions for cleanup")
 
     if(cleanupAlarmEnable.state == ON &&
@@ -89,12 +105,12 @@ then
 
     	logInfo("cleanupAlarm", "Criterias met, checking for last alarm + random")
 
-        if(cleanupAlarm.changedSince(now.minusDays(minimumIntervalDays)).state == OFF &&
-            memberNames.state != memberNames.historicState(lastCleanupAlarm).state && 
-            Math::random > 0.9) {
+        if(!cleanupAlarm.changedSince(now.minusDays(minimumIntervalDays)) &&
+            memberNames.state != memberNames.historicState(lastCleanupJodaTime).state && 
+            randomValue > 0.9) {
 
             sendCommand(cleanupAlarm, ON);
-        } else if(cleanupAlarm.changedSince(now.minusDays(maximumIntervalDays)).state == OFF) {
+        } else if(!cleanupAlarm.changedSince(now.minusDays(maximumIntervalDays))) {
 
             // No matter what, maximumIntervalDays is enough. We have to clean up. Seriously
             sendCommand(cleanupAlarm, ON);
