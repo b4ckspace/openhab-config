@@ -21,7 +21,7 @@ then
 	sendCommand(fs_beamer, OFF)
     }
 	 
-    if(lastCleanupAlarm.state == Uninizialized) {
+    if(lastCleanupAlarm.state == Uninitialized) {
         postUpdate(lastCleanupAlarm, new DateTimeType())
     }
 end
