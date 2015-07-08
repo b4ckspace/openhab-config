@@ -1,5 +1,6 @@
 // persistence strategies have a name and a definition and are referred to in the "Items" section
 Strategies {
+    everyMinute : "0 * * * * ?"
     everyHour : "0 0 * * * ?"
     everyDay  : "0 0 0 * * ?"
 
@@ -9,6 +10,5 @@ Strategies {
 
 Items {
     // persist all items once a day and on every change and restore them from the db at startup
-    * : strategy = everyChange, everyDay, restoreOnStartup
-
+    Log* : strategy = everyChange, everyDay, restoreOnStartup
 }

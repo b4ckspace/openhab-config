@@ -9,3 +9,51 @@ then
 		]
 	}
 end
+
+rule "Pizza-Alarm triggered"
+when
+	Item pizzaAlarm received update
+then
+	logInfo("pizzaAlarm", "PizzaAlarm triggered")
+	if(pc_kitchen_light.state == OFF) {
+		sendCommand(pc_oven, OFF)
+	}
+end
+
+rule "Storage room off when kitchen light off"
+when
+	Item pc_kitchen_light changed to OFF
+then
+	if(pc_storage_light.state == ON) {
+		sendCommand(pc_storage_light, OFF)
+	}
+end
+
+rule "Shutdown pressed"
+when
+	Item Shutdown received command OFF
+then
+	/* Used to translate between OFF and DOWN */
+	WindowBlinds?.members.forEach(windowBlind| sendCommand(windowBlind, DOWN))
+end
+
+rule "Shutdown Hackcenter pressed"
+when
+	Item ShutdownHackcenter received command OFF
+then
+	/* Used to translate between OFF and DOWN */
+	WindowBlindsHackcenter?.members.forEach(windowBlind| sendCommand(windowBlind, DOWN))
+
+	if(backdoorLock.state == OPEN) {
+ 		outgoingAlarmMessage.postUpdate("Hintertuer nicht abgesperrt!");
+	} else {
+		DelayedShutdownHackcenter?.members.forEach(groupMember| sendCommand(groupMember, OFF))
+	}
+end
+
+rule "Shutdown window blinds if its dark outside"
+when
+	Item WindowBlindShutdownEvent received update ON
+then
+	WindowBlinds?.members.forEach(windowBlind| sendCommand(windowBlind, DOWN))
+end

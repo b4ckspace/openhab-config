@@ -9,10 +9,16 @@ rule "No one is there anymore"
 when
 	Item memberCount changed to 0
 then
-	sendCommand(Shutdown, OFF)
-	
-	if(doorLock.state == OPEN) {
-		sendCommand(Door, OFF);
-		sendMail("schinken@hackerspace-bamberg.de", "Space-Security", "Tür wurde automatisch abgesperrt, da niemand da ist")	
-	}
+	// Our members are too slow sometimes. So delaying auto shutdown
+	// and auto lockdown
+	logInfo("member.rules", "memberCount changed to 0");
+	createTimer(now.plusMinutes(7)) [|
+		logInfo("member.rules", "Shutdown!");
+		sendCommand(Shutdown, OFF)
+
+		if(doorLock.state == OPEN) {
+			sendCommand(Door, OFF);
+			sendMail("security@hackerspace-bamberg.de", "Space-Security", "Tür wurde automatisch abgesperrt, da niemand da ist")	
+		}
+	]
 end

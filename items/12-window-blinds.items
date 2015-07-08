@@ -1,0 +1,3 @@
+Rollershutter hcWindowBlindLeft "Rollo Links" <rollershutter> (Log, WindowBlinds, WindowBlindsHackcenter) { http=">[UP:POST:http://trollo.hackcenter.core.bckspc.de/rollo/left/up] >[DOWN:POST:http://trollo.hackcenter.core.bckspc.de/rollo/left/down] >[STOP:POST:http://trollo.hackcenter.core.bckspc.de/rollo/left/stop]"  }
+
+Rollershutter hcWindowBlindRight "Rollo Rechts" <rollershutter> (Log, WindowBlinds, WindowBlindsHackcenter) { http=">[UP:POST:http://trollo.hackcenter.core.bckspc.de/rollo/right/up] >[DOWN:POST:http://trollo.hackcenter.core.bckspc.de/rollo/right/down] >[STOP:POST:http://trollo.hackcenter.core.bckspc.de/rollo/right/stop]"  }

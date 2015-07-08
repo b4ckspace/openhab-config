@@ -48,19 +48,20 @@ when
 then
 
 	sendCommand(Boot, ON)
+	sendCommand(Tablets, ON)
 	
 	sendCommand(wr_exit_white, ON)
 	createTimer(now.plusMinutes(3)) [|
 		sendCommand(wr_exit_white, OFF)
 	]
 
-	// For security: Check 30 minutes afterwars of the there's
-	// still no member -> lock everthing
+	// For security: Check 30 minutes afterwars if the there's
+	// still no member -> lock door
 	createTimer(now.plusMinutes(30)) [|
-	    if(memberCount.state == 0 && doorLock.state == OPEN) {
-		sendCommand(Door, OFF);
-		sendMail("schinken@hackerspace-bamberg.de", "Security: Ubefugter Zutritt", "Jemand hat die Tür aufgesperrt, wurde aber nicht als Mitglied erkannt. Automatisch abgesperrt.")	
-	    }
+        	if(memberCount.state == 0 && doorLock.state == OPEN) {
+			sendCommand(Door, OFF);
+			sendMail("security@hackerspace-bamberg.de", "Security: Unbefugter Zutritt (30 min)", "Jemand hat die Tür aufgesperrt, wurde aber nicht als Mitglied erkannt. Automatisch abgesperrt.")	
+        	}
 	]
 	
 	// Also switch on light, 30 minutes before sunset, if
@@ -69,6 +70,9 @@ then
 		(Sunset_Time.state as DateTimeType).calendar.timeInMillis
 	)) {
 		sendCommand(pc_entry_light, ON)
+		createTimer(now.plusMinutes(3)) [|
+			sendCommand(pc_entry_light, OFF)
+		]
 	}
 
 end
@@ -80,6 +84,7 @@ then
 	// Just in case a timer is running, disable it here 
 	// do anything else here, the light should be switched off anyway
 	sendCommand(wr_exit_white, OFF)
+	sendCommand(Tablets, OFF)
 end
 	
 	
@@ -93,6 +98,10 @@ then
 			sendCommand(wr_alarm, OFF)
 		]
 	} else {
-		sendMail("schinken@hackerspace-bamberg.de", "Türklingel verpasst", "Es hat jemand an der Tür geklingelt, doch es war niemand anwesend")	
+		sendMail("security@hackerspace-bamberg.de", "Türklingel verpasst", "Es hat jemand an der Tür geklingelt, doch es war niemand anwesend")	
+	}
+
+	if(loungeOnkyoPower.state == ON) {
+		sendCommand(loungeOnkyoVolume, 10)
 	}
 end

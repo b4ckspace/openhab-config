@@ -1,4 +1,4 @@
-sitemap backspace label="Backspace"
+sitemap default label="Backspace"
 {
 	Frame label="Master" {
 		Switch item=Shutdown label="Shutdown All" mappings=[OFF="Engage"]
@@ -6,33 +6,6 @@ sitemap backspace label="Backspace"
 		Switch item=ShutdownLounge label="Shutdown Lounge" mappings=[OFF="Engage"]
         }
 	Frame label="Spacecontrol" {
-
-		Text label="Hackcenter" icon="cellar" {
-
-			Frame label="Temperature" {
-				Setpoint item=th_hackcenter label="Thermostate [%.2f]" minValue=4.0 maxValue=26.0 step=0.5
-				Text item=temp_hackcenter_garlic label="Temperatur [%.2f] °C"
-			}
-
-			Frame label="Control" {
-				Switch item=ShutdownHackcenter label="Shutdown" mappings=[OFF="Engage"]
-				Switch item=wr_exit_white
-				Switch item=wr_exit_red
-				Switch item=wr_alarm
-				Switch item=wr_mailbox
-				Switch item=fs_licht_halogen
-				Switch item=fs_licht_oben
-				Switch item=fs_licht_regal
-				Switch item=fs_licht_neon
-				Switch item=fs_ledboard
-				Switch item=fs_music_amp
-			}
-
-			Frame label="Music" {
-				Slider item=Mpd_Hackcenter_Volume label="Volume [%d]"
-				Switch item=Mpd_Hackcenter_StartPause label="Start / Pause" icon="video"
-			}
-		}
 
 		Text label="Lounge" icon="sofa" {
 			Frame label="Temperature" {
@@ -47,9 +20,37 @@ sitemap backspace label="Backspace"
 				Switch item=fs_bookshelf
 				Switch item=fs_pedestal_tv
 				Switch item=fs_night_sky
+				Switch item=fs_bar_bar
+				Switch item=fs_subwoofer
+				Switch item=loungeOnkyoPower label="Onkyo Receiver"
 				Switch item=pc_entry_light
 				Switch item=pc_canvas_light
 				Switch item=pc_podest_light
+				Switch item=pc_bar_light
+			}
+		}
+
+		Text label="Hackcenter" icon="cellar" {
+
+			Frame label="Temperature" {
+				Text item=temp_hackcenter_garlic label="Temperatur [%.2f] °C"
+			}
+
+			Frame label="Control" {
+				Switch item=ShutdownHackcenter label="Shutdown" mappings=[OFF="Engage"]
+				Switch item=hcWindowBlindLeft label="Rollo links" mappings=[UP="Hoch", STOP="Stop", DOWN="Runter"]
+				Switch item=hcWindowBlindRight label="Rollo rechts" mappings=[UP="Hoch", STOP="Stop", DOWN="Runter"]
+				Switch item=wr_exit_white
+				Switch item=wr_exit_red
+				Switch item=wr_alarm
+				Switch item=wr_mailbox
+				Switch item=fs_licht_halogen
+				Switch item=fs_licht_oben
+				Switch item=fs_licht_regal
+				Switch item=fs_licht_neon
+				Switch item=fs_elecronic_light
+				Switch item=fs_ledboard
+				Switch item=fs_music_amp
 			}
 		}
 
@@ -57,6 +58,7 @@ sitemap backspace label="Backspace"
 			Switch item=pc_kitchen_light
 			Switch item=pc_oven
 			Switch item=pc_powersockets
+			Switch item=pc_storage_light
 		}
 
 	}
@@ -78,6 +80,8 @@ sitemap backspace label="Backspace"
 			Switch item=pc_podest_light
 			Switch item=pc_oven
 			Switch item=pc_powersockets
+			Switch item=pc_storage_light
+			Switch item=pc_bar_light
 		}
 
 		Text label="Funkstrom" icon="socket" {
@@ -95,12 +99,6 @@ sitemap backspace label="Backspace"
 
 		}
 
-		Text label="Thermostats" icon="heating" {
-			Setpoint item=th_hackcenter minValue=4.0 maxValue=26.0 step=0.5
-			Setpoint item=th_lounge minValue=4.0 maxValue=26.0 step=0.5
-			Setpoint item=th_workshop minValue=4.0 maxValue=26.0 step=0.5
-		}
-
 		Text label="Temperatures" icon="temperature" {
 			Text item=temp_aussen label="Aussen [%.2f °C]"
 			Text item=temp_hackcenter_garlic
@@ -111,19 +109,21 @@ sitemap backspace label="Backspace"
 			Text item=temp_lounge label="Lounge Decke [%.2f °C]"
 		}
 
-		Text label="MPD" icon="video" {
-			Switch item=Mpd_Hackcenter_StartPause label="Hackcenter Start/Pause"
-		}
-
 		Text label="Testing" icon="bath" {
+			Text item=lastCleanupAlarm label="Last cleanup [%1$tA, %1$td.%1$tm.%1$tY]"
+			Switch item=cleanupAlarmEnable label="Cleanup alarm enable"
 			Setpoint item=debugNumberItem label="Test [%.2f]" minValue=6.0 maxValue=26.0 step=0.5
 			Text item=doorLock
 			Text item=doorFrame
 			Text item=doorBell
 			Text item=backdoorLock
+			Text item=memberCount
 			Switch item=testItem
 			Switch item=Schild
-			Chart item=memberCount period=2W
+ 			Chart item=th_lounge_wmid
+ 			Chart item=memberCount
+			Text item=Sunset_Time
+			Text item=WindowBlindShutdownTime
 		}
 	}
 
@@ -133,7 +133,6 @@ sitemap backspace label="Backspace"
 		Text item=temp_lounge
 		Text item=temp_aussen
 		Text item=memberCount
-		Text item=alive_hosts
 		Text item=radiationCPM
 		Text item=radiationUSV
 	}

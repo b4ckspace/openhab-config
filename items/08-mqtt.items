@@ -1,14 +1,31 @@
-Contact doorLock "Türschloss [%s]" <lock> {mqtt="<[space:sensor/door/lock:state:MAP(contact.map)]"}
-Contact doorFrame "Türrahmen [%s]" <door> {mqtt="<[space:sensor/door/frame:state:MAP(contact.map)]"}
-Contact backdoorLock "Hintertür Schloss [%s]" <lock> {mqtt="<[space:sensor/backdoor/lock:state:MAP(contact.map)]"}
 
-Number radiationCPM "Strahlung [%.2f CPM]" <energy> {mqtt="<[space:sensor/radiation/cpm:state:default]"}
-Number radiationUSV "Strahlung [%.2f uSv/h]" <energy> {mqtt="<[space:sensor/radiation/uSv:state:default]"}
+Contact doorLock "Türschloss [%s]" <lock> (Log) {mqtt="<[space:sensor/door/lock:state:MAP(contact.map)]"}
+Contact doorFrame "Türrahmen [%s]" <door> (Log) {mqtt="<[space:sensor/door/frame:state:MAP(contact.map)]"}
+Contact backdoorLock "Hintertür Schloss [%s]" <lock> (Log) {mqtt="<[space:sensor/backdoor/lock:state:MAP(contact.map)]"}
 
-Number memberCount "Mitglieder anwesend [%d]" <present> {mqtt="<[space:sensor/space/member/count:state:default]"}
-Number accountBalance "Kontostand [%.2f €]" <present> {mqtt="<[space:sensor/space/accountBalance:state:default]"}
+Number radiationCPM "Strahlung [%.2f CPM]" <energy> (Log) {mqtt="<[space:sensor/radiation/cpm:state:default]"}
+Number radiationUSV "Strahlung [%.2f uSv/h]" <energy> (Log) {mqtt="<[space:sensor/radiation/uSv:state:default]"}
 
-Switch doorButton "Doorbutton [%s]" <shield> {mqtt="<[space:sensor/door/button:state:MAP(button.map)]"}
-Switch doorBell "Doorbell [%s]" <shield> {mqtt="<[space:sensor/door/bell:state:MAP(button.map)]"}
+//Number memberCount "Mitglieder anwesend [%d]" <present> (Log) {mqtt="<[space:sensor/space/member/count:state:default]"}
+Number accountBalance "Kontostand [%.2f €]" <present> (Log) {mqtt="<[space:sensor/space/accountBalance:state:default]"}
+
+Switch doorButton "Doorbutton [%s]" <shield> (Log) {mqtt="<[space:sensor/door/button:state:MAP(button.map)]"}
+Switch doorBell "Doorbell [%s]" <shield> (Log) {mqtt="<[space:sensor/door/bell:state:MAP(button.map)]"}
  
 String alarmMessage "Letzter Alarm" <siren> {mqtt="<[space:psa/alarm:state:default]"}
+String outgoingAlarmMessage {mqtt=">[space:psa/alarm:state:*:DEFAULT"]"}
+
+String pizzaAlarm "Pizza Alarm" <siren> {mqtt="<[space:psa/pizza:state:default]"}
+
+Number strichlisteTransaction "Letzte Bezahlung [%.2f €]" (Log) {mqtt="<[space:strichliste/transactionValue:state:default]"}
+
+/* TEMPERATURES */
+Number temp_hackcenter_garlic "Temperature Hackcenter [%.2f °C]" <temperature> (Log) {mqtt="<[space:sensor/temperature/hackcenter/shelf:state:default]"}
+Number temp_cnc "Temperature CNC [%.2f °C]" <temperature> (Log) {mqtt="<[space:sensor/temperature/misc/cnc:state:default]"}
+Number temp_rack "Temperature Rack [%.2f °C]" <temperature> (Log) {mqtt="<[space:sensor/temperature/misc/rack:state:default]"}
+Number temp_wc "Temperature WC [%.2f °C]" <temperature> (Log) {mqtt="<[space:sensor/temperature/misc/restroom:state:default]"}
+
+Number temp_lounge_podest "Temperature Podest [%.2f °C]" <temperature> (Log) {mqtt="<[space:sensor/temperature/lounge/podest:state:default]"}
+Number temp_lounge "Temperature Lounge [%.2f °C]" <temperature> (Log) {mqtt="<[space:sensor/temperature/lounge/ceiling:state:default]"}
+Number temp_aussen "Temperature Aussen [%.2f °C]" <temperature> (Log) {mqtt="<[space:sensor/temperature/misc/outside:state:default]"}
+

@@ -1,0 +1,2 @@
+Switch Tablets { exec=">[ON:/opt/openhab/helper/notifyTablets.sh wakeup] >[OFF:/opt/openhab/helper/notifyTablets.sh shutdown]"
+

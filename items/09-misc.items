@@ -1,14 +1,22 @@
-DateTime Sunset_Time    "Sunset [%1$tH:%1$tM]"   {astro="type=SUNSET_TIME"}
-Switch   Sunset_Event                            {astro="type=SUNSET"}
+DateTime Sunset_Time   "Sunset Time [%1$tH:%1$tM]"   {astro="planet=sun, type=set, property=end"}
+Switch Sunset_Event    {astro="planet=sun, type=set, property=end, offset=-30"}
+Switch WindowBlindShutdownEvent    {astro="planet=sun, type=set, property=end, offset=180"}
+DateTime WindowBlindShutdownTime  "Sunset Time [%1$tH:%1$tM]"  {astro="planet=sun, type=set, property=end, offset=180"}
 
-Switch cleanupAlarmEnable
-Switch cleanupAlarm
+
+DateTime lastCleanupAlarm (Log)
+Switch cleanupAlarmEnable (Log)
+Switch cleanupAlarm (Log)
 
 Switch Schild { exec=">[ON:/opt/openhab/helper/schild.sh ON] >[OFF:/opt/openhab/helper/schild.sh STANDBY]" }
-String memberNames "Members" <network> { http="<[spaceApi:60000:JS(spaceApiMembers.js)]" }
+String memberNames "Members" <network> (Log) { http="<[spaceApi:300000:JS(spaceApiMembers.js)]" }
+Number memberCount "Space Members Present" (Log) {http="<[spaceApi:300000:JS(spaceApiMemberCount.js)]"}
 
 
 Number debugNumberItem
 String debugItem
 Switch testItem
 
+
+Switch loungeOnkyoPower (Log, Shutdown, ShutdownLounge) {onkyo="ON:lounge:POWER_ON, OFF:lounge:POWER_OFF"}
+Dimmer loungeOnkyoVolume "Volume [%d]" (Log) {onkyo="INIT:lounge:VOLUME_QUERY, INCREASE:lounge:VOLUME_UP, DECREASE:lounge:VOLUME_DOWN, *:lounge:VOLUME_SET"}

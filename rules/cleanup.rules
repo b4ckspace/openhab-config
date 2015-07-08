@@ -1,4 +1,5 @@
 import org.openhab.core.library.types.DateTimeType
+import org.openhab.core.persistence.*
 import org.joda.time.DateTime
 
 var Number alarmNotBeforeHour = 16
@@ -13,12 +14,10 @@ rule "Enable Cleanup Alarm on system start"
 then
     sendCommand(cleanupAlarmEnable, ON)
 
+ //   outgoingAlarmMessage.postUpdate("test123 asd")
+
     if(cleanupAlarm.state == Uninitialized) {
 	sendCommand(cleanupAlarm, OFF)
-    }
-
-    if(fs_beamer.state == Uninitialized) {
-	sendCommand(fs_beamer, OFF)
     }
 	 
     if(lastCleanupAlarm.state == Uninitialized) {
@@ -32,9 +31,10 @@ when
 then
 
     postUpdate(lastCleanupAlarm, new DateTimeType())
+ //   outgoingAlarmMessage.postUpdate("CLEANUP ALARM! ALLE AUFRAEUMEN!")
 
     // Switch stuff on
-    sendMail("security@hackerspace-bamberg.de", "Debug: Cleanup Alarm begin", "Cleanup alarm was triggered")
+    sendMail("schinken@hackerspace-bamberg.de", "Debug: Cleanup Alarm begin", "Cleanup alarm was triggered")
 
     /*
     * TODO:
@@ -55,7 +55,7 @@ when
     Item cleanupAlarm changed to OFF
 then
     // Switch stuff off
-    sendMail("security@hackerspace-bamberg.de", "Debug: Cleanup Alarm end", "Cleanup alarm ended")
+    sendMail("schinken@hackerspace-bamberg.de", "Debug: Cleanup Alarm end", "Cleanup alarm ended")
 
     // Everything off again ;) 
 end
@@ -72,7 +72,7 @@ end
 
 rule "Check for cleanup alarm"
 when
-    Time cron "0 0/23 * * * ?"
+    Time cron "42 */23 * * * ?"
 then
     /*
     * Check every 23 minutes, only if cleanupAlarm is enabled
@@ -93,26 +93,99 @@ then
     */
 
     // We need to convert it to yodatime before using it with historicState or changedSince
+
     val lastCleanupJodaTime = new DateTime((lastCleanupAlarm.state as DateTimeType).calendar.timeInMillis)
     val randomValue = Math::random
 
     logInfo("cleanupAlarm", "Checking for conditions for cleanup")
 
+    if(cleanupAlarmEnable.state == ON) {
+    	logInfo("cleanupAlarm", "[OK] Cleanup Alarm enabled");
+    } else {
+    	logInfo("cleanupAlarm", "[!!] Cleanup Alarm disabled");
+    }
+
+    if(doorLock.state == OPEN) {
+    	logInfo("cleanupAlarm", "[OK] Door not locked");
+    } else {
+    	logInfo("cleanupAlarm", "[!!] Door locked");
+    }
+
+    if(fs_beamer.state == OFF || fs_beamer.state == Uninitialized) {
+    	logInfo("cleanupAlarm", "[OK] Beamer is switched off");
+    } else {
+    	logInfo("cleanupAlarm", "[!!] Beamer is switched on");
+    }
+
+    if(memberCount.state >= minimumMembersPresent) {
+    	logInfo("cleanupAlarm", "[OK] Enough members present (" + memberCount.state + ")");
+    } else {
+    	logInfo("cleanupAlarm", "[!!] Not enough members present (" + memberCount.state + ")");
+    }
+
+
+    val membersLastHour = memberCount.historicState(now.minusHours(1)).state;
+
+    if(membersLastHour >= minimumMembersPresent) {
+    	logInfo("cleanupAlarm", "[OK] Enough members present last hour (" + membersLastHour + ")");
+    } else {
+    	logInfo("cleanupAlarm", "[!!] Not enough members present last hour (" + membersLastHour + ")");
+    }
+
+    if(now.getHourOfDay() >= alarmNotBeforeHour) {
+    	logInfo("cleanupAlarm", "[OK] In alarm-time range >= (" + now.getHourOfDay() + ")");
+    } else {
+    	logInfo("cleanupAlarm", "[!!] It's to early (" + now.getHourOfDay() + ")");
+    }
+
+    if(now.getHourOfDay() <= alarmNotAfterHour) {
+    	logInfo("cleanupAlarm", "[OK] In alarm-time range <= (" + now.getHourOfDay() + ")");
+    } else {
+    	logInfo("cleanupAlarm", "[!!] It's to late (" + now.getHourOfDay() + ")");
+    }
+
+    if(!cleanupAlarm.changedSince(now.minusDays(minimumIntervalDays))) {
+    	logInfo("cleanupAlarm", "[OK] Last alarm is at least " + minimumIntervalDays + " ago");
+    } else {
+    	logInfo("cleanupAlarm", "[!!] Last alarm is not at least " + minimumIntervalDays + " ago");
+    }
+
+    if(memberNames.state != memberNames.historicState(lastCleanupJodaTime)) {
+    	logInfo("cleanupAlarm", "[OK] Not the same members as last time (" + memberNames.state + ")");
+    } else {
+    	logInfo("cleanupAlarm", "[!!] Same members as last time (" + memberNames.state + ")");
+    }
+
+    if(randomValue > 0.9) {
+    	logInfo("cleanupAlarm", "[OK] Random says YUP! (" + randomValue + ")");
+    } else {
+    	logInfo("cleanupAlarm", "[!!] Random says Nope! (" + randomValue + ")");
+    }
+
+    if(!cleanupAlarm.changedSince(now.minusDays(maximumIntervalDays))) {
+    	logInfo("cleanupAlarm", "[OK] Alarm would be forced, even if random, memberNames and lastClean was not met");
+    } else {
+    	logInfo("cleanupAlarm", "[!!] Alarm would not be forced");
+    }
+
     if(cleanupAlarmEnable.state == ON &&
-        doorLock.state == OPEN && fs_beamer.state == OFF &&
-        memberCount.state >= minimumMembersPresent && memberCount.historicState(now.minusHours(1)).state >= minimumMembersPresent && 
+        doorLock.state == OPEN && (fs_beamer.state == OFF || fs_beamer.state == Uninitialized) &&
+        memberCount.state >= minimumMembersPresent &&  membersLastHour >= minimumMembersPresent && 
         now.getHourOfDay() >= alarmNotBeforeHour && now.getHourOfDay() <= alarmNotAfterHour) {
 
     	logInfo("cleanupAlarm", "Criterias met, checking for last alarm + random")
 
         if(!cleanupAlarm.changedSince(now.minusDays(minimumIntervalDays)) &&
-            memberNames.state != memberNames.historicState(lastCleanupJodaTime).state && 
+            memberNames.state != memberNames.historicState(lastCleanupJodaTime) && 
             randomValue > 0.9) {
+
+    	    logInfo("cleanupAlarm", "Random + lastAlarm met")
 
             sendCommand(cleanupAlarm, ON);
         } else if(!cleanupAlarm.changedSince(now.minusDays(maximumIntervalDays))) {
 
             // No matter what, maximumIntervalDays is enough. We have to clean up. Seriously
+    	    logInfo("cleanupAlarm", "Alarm forced")
             sendCommand(cleanupAlarm, ON);
         }
 

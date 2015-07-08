@@ -1,6 +1,14 @@
 Group Boot
+Group Log
 
 Group ThermGroup
 Group ThermHackcenter
 Group ThermLounge
 Group ThermWorkshop
+
+Group WindowBlinds
+
+Group DelayedShutdownHackcenter
+
+Group WindowBlindsHackcenter (WindowBlinds)
+Group WindowBlindsLounge (WindowBlinds)

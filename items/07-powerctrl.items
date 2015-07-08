@@ -1,8 +1,10 @@
 /* Powercontrol Hackcenter */
 
-Switch pc_kitchen_light "Licht Küche" <slider> (Shutdown, ShutdownLounge)  { http=">[ON:POST:http://powerctrl.lounge/device/kitchen_light] >[OFF:DELETE:http://powerctrl.lounge/device/kitchen_light]"  }
-Switch pc_podest_light "Licht Podest" <slider> (Shutdown, ShutdownLounge)  { http=">[ON:POST:http://powerctrl.lounge/device/podest_light] >[OFF:DELETE:http://powerctrl.lounge/device/podest_light]"  }
-Switch pc_canvas_light "Licht Leinwand" <slider> (Shutdown, ShutdownLounge)  { http=">[ON:POST:http://powerctrl.lounge/device/canvas_light] >[OFF:DELETE:http://powerctrl.lounge/device/canvas_light]"  }
-Switch pc_entry_light "Licht Eingang" <slider> (Shutdown, ShutdownLounge)  { http=">[ON:POST:http://powerctrl.lounge/device/entry_light] >[OFF:DELETE:http://powerctrl.lounge/device/entry_light]"  }
-Switch pc_oven "Backofen" <slider> (Shutdown, ShutdownLounge)  { http=">[ON:POST:http://powerctrl.lounge/device/oven] >[OFF:DELETE:http://powerctrl.lounge/device/oven]"  }
-Switch pc_powersockets "Steckdosen" <slider> (Shutdown, ShutdownLounge)  { http=">[ON:POST:http://powerctrl.lounge/device/powersockets] >[OFF:DELETE:http://powerctrl.lounge/device/powersockets]"  }
+Switch pc_kitchen_light "Licht Küche" <slider> (Log, Shutdown, ShutdownLounge)  { http=">[ON:POST:http://powerctrl.lounge/device/kitchen_light] >[OFF:DELETE:http://powerctrl.lounge/device/kitchen_light]"  }
+Switch pc_podest_light "Licht Podest" <slider> (Log, Shutdown, ShutdownLounge)  { http=">[ON:POST:http://powerctrl.lounge/device/podest_light] >[OFF:DELETE:http://powerctrl.lounge/device/podest_light]"  }
+Switch pc_canvas_light "Licht Leinwand" <slider> (Log, Shutdown, ShutdownLounge)  { http=">[ON:POST:http://powerctrl.lounge/device/canvas_light] >[OFF:DELETE:http://powerctrl.lounge/device/canvas_light]"  }
+Switch pc_entry_light "Licht Eingang" <slider> (Log, Shutdown, ShutdownLounge)  { http=">[ON:POST:http://powerctrl.lounge/device/entry_light] >[OFF:DELETE:http://powerctrl.lounge/device/entry_light]"  }
+Switch pc_oven "Backofen" <slider> (Log, Shutdown, ShutdownLounge)  { http=">[ON:POST:http://powerctrl.lounge/device/oven] >[OFF:DELETE:http://powerctrl.lounge/device/oven]"  }
+Switch pc_powersockets "Steckdosen" <slider> (Log, Shutdown, ShutdownLounge)  { http=">[ON:POST:http://powerctrl.lounge/device/powersockets] >[OFF:DELETE:http://powerctrl.lounge/device/powersockets]"  }
+Switch pc_storage_light "Licht Lager" <slider> (Log, Shutdown, ShutdownLounge)  { http=">[ON:POST:http://powerctrl.lounge/device/storage_light] >[OFF:DELETE:http://powerctrl.lounge/device/storage_light]"  }
+Switch pc_bar_light "Licht Bar" <slider> (Log, Shutdown, ShutdownLounge)  { http=">[ON:POST:http://powerctrl.lounge/device/bar_light] >[OFF:DELETE:http://powerctrl.lounge/device/bar_light]"  }

@@ -1,0 +1,15 @@
+rule "Sync Subwoofer to onkyo power state"
+when
+	Item loungeOnkyoPower changed
+then
+	if(loungeOnkyoPower.state == ON) {
+		sendCommand(fs_subwoofer, ON)
+
+		createTimer(now.plusSeconds(5)) [|
+			sendCommand(loungeOnkyoVolume, 20)
+		]
+	} else {
+		sendCommand(fs_subwoofer, OFF)
+	}
+end
+
