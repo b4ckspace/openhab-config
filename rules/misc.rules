@@ -53,7 +53,8 @@ end
 
 rule "Shutdown window blinds if its dark outside"
 when
-	Item WindowBlindShutdownEvent received update ON
+	Item WindowBlindShutdownEvent received update ON or
+    	Time cron "0 0 0 * * ?"
 then
 	WindowBlinds?.members.forEach(windowBlind| sendCommand(windowBlind, DOWN))
 end
