@@ -6,14 +6,14 @@ Contact backdoorLock "Hintertür Schloss [%s]" <lock> (Log) {mqtt="<[space:senso
 Number radiationCPM "Strahlung [%.2f CPM]" <energy> (Log) {mqtt="<[space:sensor/radiation/cpm:state:default]"}
 Number radiationUSV "Strahlung [%.2f uSv/h]" <energy> (Log) {mqtt="<[space:sensor/radiation/uSv:state:default]"}
 
-//Number memberCount "Mitglieder anwesend [%d]" <present> (Log) {mqtt="<[space:sensor/space/member/count:state:default]"}
+/* Number memberCount "Mitglieder anwesend [%d]" <present> (Log) {mqtt="<[space:sensor/space/member/count:state:default]"} */
 Number accountBalance "Kontostand [%.2f €]" <present> (Log) {mqtt="<[space:sensor/space/accountBalance:state:default]"}
 
 Switch doorButton "Doorbutton [%s]" <shield> (Log) {mqtt="<[space:sensor/door/button:state:MAP(button.map)]"}
 Switch doorBell "Doorbell [%s]" <shield> (Log) {mqtt="<[space:sensor/door/bell:state:MAP(button.map)]"}
- 
+
 String alarmMessage "Letzter Alarm" <siren> {mqtt="<[space:psa/alarm:state:default]"}
-String outgoingAlarmMessage {mqtt=">[space:psa/alarm:state:*:DEFAULT"]"}
+String outgoingAlarmMessage {mqtt=">[space:psa/alarm:state:*:default]"} 
 
 String pizzaAlarm "Pizza Alarm" <siren> {mqtt="<[space:psa/pizza:state:default]"}
 
