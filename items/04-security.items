@@ -1,0 +1,4 @@
+Switch rm_hackcenter "Rauchmelder Hackcenter" <fire> (Log, SmokeDetectors) { homematic="address=foobar, channel=1, parameter=STATE" }
+Switch rm_lounge "Rauchmelder Lounge" <fire> (Log, SmokeDetectors) { homematic="address=foobar, channel=1, parameter=STATE" }
+Switch rm_projekt "Rauchmelder Projektraum" <fire> (Log, SmokeDetectors) { homematic="address=foobar, channel=1, parameter=STATE" }
+Switch rm_server "Rauchmelder Server" <fire> (Log, SmokeDetectors) { homematic="address=foobar, channel=1, parameter=STATE" }
